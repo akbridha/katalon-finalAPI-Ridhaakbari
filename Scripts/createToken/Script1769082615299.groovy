@@ -25,15 +25,22 @@ import com.kms.katalon.core.testobject.ResponseObject
 
 ResponseObject response = WS.sendRequest(findTestObject('Object Repository/CreateToken',  [ 'host': GlobalVariable.host ]))
 
+// Assertion: verify status code
+assert response.getStatusCode() == 200 : "Status code is not 200, but ${response.getStatusCode()}"
+
 //  response ke console
 println(response.getResponseText())
 
 // Ambil token dari response dan assign ke GlobalVariable
-def json = new JsonSlurper().parseText(response.getResponseText())
-if (json.token) {
-	GlobalVariable.token = json.token
-	println("Token assigned to GlobalVariable.token: ${json.token}")
+Object json = new JsonSlurper().parseText(response.getResponseText())
+if (json.hasProperty('token') || (json instanceof Map && json.containsKey('token'))) {
+	String tokenValue = json instanceof Map ? json.get('token') : json.token
+	GlobalVariable.token = tokenValue
+	println("Token assigned to GlobalVariable.token: ${tokenValue}")
+	// Assertion: verify token is not empty
+	assert tokenValue != null && !tokenValue.isEmpty() : "Token is empty or null"
 } else {
 	println("Token not found in response.")
+	assert false : "Token not found in response"
 }
 

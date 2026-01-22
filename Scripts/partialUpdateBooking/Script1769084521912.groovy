@@ -25,3 +25,9 @@ import org.openqa.selenium.Keys as Keys
 
 ResponseObject response = WS.sendRequest(findTestObject('Object Repository/PartialUpdateBooking', [ 'host': GlobalVariable.host ]))
 println(response.getResponseText())
+
+// Assertion: verify status code
+assert response.getStatusCode() == 200 : "Status code is not 200, but ${response.getStatusCode()}"
+
+// Assertion: verify response is not empty
+assert response.getResponseText() != null && !response.getResponseText().isEmpty() : "Response is empty"

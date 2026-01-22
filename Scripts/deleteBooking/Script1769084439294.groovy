@@ -26,3 +26,6 @@ import org.openqa.selenium.Keys as Keys
 
 ResponseObject response = WS.sendRequest(findTestObject('Object Repository/DeleteBooking', [ 'host': GlobalVariable.host ]))
 println(response.getResponseText())
+
+// Assertion: verify status code (201 Created atau 200 OK untuk delete)
+assert response.getStatusCode() == 201 || response.getStatusCode() == 200 : "Status code is not 200/201, but ${response.getStatusCode()}"

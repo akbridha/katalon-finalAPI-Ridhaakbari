@@ -23,5 +23,20 @@ import com.kms.katalon.core.windows.keyword.WindowsBuiltinKeywords as Windows
 import internal.GlobalVariable as GlobalVariable
 import org.openqa.selenium.Keys as Keys
 
+
 ResponseObject response = WS.sendRequest(findTestObject('Object Repository/GetBooking', [ 'host': GlobalVariable.host ]))
 println(response.getResponseText())
+
+// Assertion: verify status code
+assert response.getStatusCode() == 200 : "Status code is not 200, but ${response.getStatusCode()}"
+
+// Assertion: verify structure (array of object with key 'bookingid')
+import groovy.json.JsonSlurper
+List jsonList = (List) new JsonSlurper().parseText(response.getResponseText())
+assert jsonList instanceof List : "Response is not a list"
+if (jsonList.size() > 0) {
+	Object firstItem = jsonList.get(0)
+	assert firstItem.hasProperty('bookingid') || (firstItem instanceof Map && firstItem.containsKey('bookingid')) : "First item does not have 'bookingid' key"
+} else {
+	println("Response list is empty, no structure to verify.")
+}

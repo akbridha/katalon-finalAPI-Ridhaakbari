@@ -26,3 +26,11 @@ import org.openqa.selenium.Keys as Keys
 
 ResponseObject response = WS.sendRequest(findTestObject('Object Repository/GetBookingIds', [ 'host': GlobalVariable.host ]))
 println(response.getResponseText())
+
+// Assertion: verify status code
+assert response.getStatusCode() == 200 : "Status code is not 200, but ${response.getStatusCode()}"
+
+// Assertion: verify response is a list
+import groovy.json.JsonSlurper
+List jsonList = (List) new JsonSlurper().parseText(response.getResponseText())
+assert jsonList instanceof List : "Response is not a list"
