@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description></description>
+   <name>partialUpdateBooking</name>
+   <tag></tag>
+   <comment></comment>
+   <recordOption>OTHER</recordOption>
+   <testCaseGuid>00c6f6ca-a1ec-4d1b-8df1-9deeedf5ac6b</testCaseGuid>
+</TestCaseEntity>
